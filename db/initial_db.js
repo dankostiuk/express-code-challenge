@@ -37,6 +37,16 @@ initializeData = async () => {
       console.log("Collection doesn't exist, continue...");
     });
 
+  connection
+    .dropCollection("users")
+    .then(function() {
+      // success do nothing
+    })
+    .catch(function() {
+      // error handling
+      console.log("Collection doesn't exist, continue...");
+    });
+
   let bookSchema = new mongoose.Schema({
     isbn: String,
     title: String,

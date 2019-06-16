@@ -20,6 +20,7 @@ router.post("/create", async (req, res, next) => {
     });
   }
 
+  let institutionId = 0;
   if (!email.includes("@")) {
     errors.push({
       msg: "Must be a valid email."
@@ -40,6 +41,8 @@ router.post("/create", async (req, res, next) => {
       errors.push({
         msg: "The user's email must belong to a valid institution."
       });
+    } else {
+      institutionId = institution._id;
     }
   }
 
@@ -58,7 +61,8 @@ router.post("/create", async (req, res, next) => {
       email: email,
       password: password,
       name: name,
-      role: role
+      role: role,
+      institution_id: institutionId
     });
 
     bcrypt.genSalt(10, (err, salt) =>
@@ -84,10 +88,32 @@ router.post("/create", async (req, res, next) => {
 });
 
 router.post("/signin", (req, res, next) => {
-  passport.authenticate("local", {
-    successRedirect: "/",
-    failureRedirect: "/"
-  })(req, res, next);
+  passport.authenticate("local", function(err, user, info) {
+    if (err) {
+      res.jsend.error({
+        code: 500,
+        message: "Something went wrong while trying to log in"
+      });
+    } else {
+      if (!user) {
+        res.jsend.error({
+          code: 403,
+          message: "Invalid login"
+        });
+      } else {
+        req.login(user, function(err) {
+          if (err) {
+            res.jsend.error({
+              code: 500,
+              message: "Something went wrong while trying to log in"
+            });
+          } else {
+            res.jsend.success("Valid login");
+          }
+        });
+      }
+    }
+  })(req, res);
 });
 
 router.get("/logout", (req, res) => {

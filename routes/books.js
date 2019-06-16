@@ -9,39 +9,27 @@ const Institution = require("../models/institution");
  * The books route handler.
  */
 router.get("/", ensureAuthenticated, async (req, res) => {
-  let user = await User.findOne({ _id: req.session.passport.user })
-    .then(user => {
-      return user;
-    })
-    .catch(error => {
-      console.log(error);
-    });
+  let user = await User.findOne({ _id: req.session.passport.user });
 
-  let email = user.email;
-
-  let emailDomain = email.split("@")[1].split(".")[0];
+  console.log(user);
 
   let institution = await Institution.findOne({
-    emailDomain: emailDomain
-  })
-    .then(institution => {
-      return institution;
-    })
-    .catch(error => {
-      console.log(error);
-    });
+    _id: user.institution_id
+  });
+
+  console.log(institution);
 
   if (!institution) {
     res
       .status(404)
       .send("This user does not belong to any valid institutions.");
+  } else {
+    const books = await Book.find({
+      institution_id: user.institution_id
+    });
+
+    res.status(200).send(books);
   }
-
-  const books = await Book.find({
-    institution_id: institution.id
-  });
-
-  res.status(200).send(books);
 });
 
 module.exports = router;
