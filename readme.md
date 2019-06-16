@@ -1,54 +1,23 @@
 # Express Coding Challenge
-The premise of this challenge is to see the approach you take to:
-- Use an ORM to interact with a simple database model
-- Create a basic routing mechanism for HTTP requests
-- Authenticate a user’s access to a route
-- Respond to a request in a consistent and logical manner
-- Test your work with both unit tests and integration tests.
 
-Please clone this repository and send through your completed coding challenge using whatever you feel fit. We'll take a look and then have a chat about the decisions you took and challenges you encountered. Thanks for taking the time.
+Here you will find my solution for the 'express-coding-challenge'.
 
-## Challenge
-1. Use [Sequelize](http://docs.sequelizejs.com/manual/installation/getting-started) or [Mongoose](https://mongoosejs.com/) to define:
+I used `mongoose` to interface with a running instance of `mongodb` and have a file `db/initial_db.js` which creates 3 institutions along with 5 books upon app startup. In order to create a new user, the client will need to ensure that the user's email domain belongs to one of these 3 institutions.
 
-   1.1. A **`User`** model which should have basic identifying information:
-      - Name
-      - Email address
-      - Role (Acceptable entries: ‘student’, ‘academic’, ‘administrator’)
-      - Password.
+I've added an additional `GET /users/logout` endpoint to end the current user's session.
 
-   1.2. An **`Institution`** model which stores information about a school:
-      - Name
-      - URL
-      - Email domain.
-      
-   1.3. A **`Book`** model which stores information about books:
-      - ISBN
-      - Title
-      - Author.
-      
-   1.4. Relationships between **`Users`** and **`Institutions`**, and **`Books`** and **`Institutions`** (Consider #4.3 in the relationships you create).
-2. Use [Express](https://expressjs.com/) to respond to requests.
-3. Create a test suite which includes code coverage, to unit and integration test the routes you’ve created.
-4. Create routes:
+## Set up
 
-    4.1 `POST /users/signin` Use the passport library to authenticate a user and respond with a successful message that uses the [JSend](https://labs.omniti.com/labs/jsend) framework
-    
-    4.2 `POST /users/create` Creates a user and based on the user’s email domain links them to an institution. Denies creation of a user if their domain does not exist.
-    
-    4.3 `GET /books` Once authenticated, responds with a JSON object containing a list of Books that the user has access to via their Institution.
-5. (Optional) Provide a [Postman](https://www.getpostman.com/) collection which performs some basically functionality on the routes you've created.
+1. Clone this repository
 
-## Things to keep in mind
-- Security
-- Scalability
-- Consistency
-- Testing.
+2. Ensure `mongodb` is running locally
 
-## Running this application
-You can run the application by typing:
-`npm install` followed by `npm start` 
+3. Create .env file within project root containing a `DB_CONN` property referencing your mongodb connection string, for example:
 
-## The structure of this repository
-The structure of this repository should be relatively self-explanatory. 
-Use the appropriate directory for your code. A basic example has been provided for the index route.
+DB_CONN='mongodb://admin:admin123@localhost/bibliotech'
+
+4. Run `npm install` and `npm start`
+
+5. For tests, run `npm test` or `npm run coverage` to see nyc coverage
+
+6. Please see `postman_collection.json` for handy requests
