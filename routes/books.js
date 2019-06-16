@@ -11,13 +11,9 @@ const Institution = require("../models/institution");
 router.get("/", ensureAuthenticated, async (req, res) => {
   let user = await User.findOne({ _id: req.session.passport.user });
 
-  console.log(user);
-
   let institution = await Institution.findOne({
     _id: user.institution_id
   });
-
-  console.log(institution);
 
   if (!institution) {
     res
