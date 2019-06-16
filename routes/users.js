@@ -20,26 +20,32 @@ router.post("/create", async (req, res, next) => {
     });
   }
 
-  let emailDomain = email.split("@")[1].split(".")[0];
-  let institution = await Institution.findOne({
-    emailDomain: emailDomain
-  })
-    .then(institution => {
-      return institution;
-    })
-    .catch(error => {
-      console.log(error);
-    });
-
-  if (!institution) {
+  if (!email.includes("@")) {
     errors.push({
-      msg: "The user's email must belong to a valid institution."
+      msg: "Must be a valid email."
     });
+  } else {
+    let emailDomain = email.split("@")[1].split(".")[0];
+    let institution = await Institution.findOne({
+      emailDomain: emailDomain
+    })
+      .then(institution => {
+        return institution;
+      })
+      .catch(error => {
+        console.log(error);
+      });
+
+    if (!institution) {
+      errors.push({
+        msg: "The user's email must belong to a valid institution."
+      });
+    }
   }
 
   if (role !== "student" && role !== "academic" && role !== "administrator") {
     errors.push({
-      msg: "Role must be one of: student, academic, or administrator"
+      msg: "Role must be one of: student, academic, or administrator."
     });
   }
 

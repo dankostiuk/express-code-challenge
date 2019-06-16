@@ -5,7 +5,7 @@ let connection = mongoose.createConnection(process.env.DB_CONN, {
   useNewUrlParser: true
 });
 
-let initializeData = async () => {
+initializeData = async () => {
   console.log("Initializing mongodb default data...");
   let institutionSchema = new mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
@@ -16,9 +16,26 @@ let initializeData = async () => {
   let Institution = connection.model("Institution", institutionSchema);
 
   // delete previous collections data
-  console.log("Deleting previous institutions and books...");
-  connection.dropCollection("institutions");
-  connection.dropCollection("books");
+
+  connection
+    .dropCollection("institutions")
+    .then(function() {
+      // success do nothing
+    })
+    .catch(function() {
+      // error handling
+      console.log("Collection doesn't exist, continue...");
+    });
+
+  connection
+    .dropCollection("books")
+    .then(function() {
+      // success do nothing
+    })
+    .catch(function() {
+      // error handling
+      console.log("Collection doesn't exist, continue...");
+    });
 
   let bookSchema = new mongoose.Schema({
     isbn: String,

@@ -1,6 +1,9 @@
 # Env file
 .env
 
+# Coverage output
+.nyc_output
+
 # Dependency directories
 node_modules
 

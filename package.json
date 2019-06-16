@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "npm run-script initialize-db && nodemon index.js",
-    "initialize-db": "node ./db/initial-db.js"
+    "initialize-db": "node ./db/initial_db.js",
+    "test": "mocha tests --recursive",
+    "coverage": "nyc npm run test"
   },
   "author": "",
   "license": "ISC",
@@ -20,6 +22,11 @@
     "passport-local": "^1.0.0"
   },
   "devDependencies": {
-    "nodemon": "^1.19.1"
+    "chai": "^4.2.0",
+    "istanbul": "^0.4.5",
+    "mocha": "^6.1.4",
+    "nodemon": "^1.19.1",
+    "nyc": "^14.1.1",
+    "supertest": "^4.0.2"
   }
 }
