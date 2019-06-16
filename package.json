@@ -4,11 +4,22 @@
   "description": "A coding challenge to assess your ability to navigate an express server implementation.",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "npm run-script initialize-db && nodemon index.js",
+    "initialize-db": "node ./db/initial-db.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.16.4"
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^8.0.0",
+    "express": "^4.17.1",
+    "express-session": "^1.16.2",
+    "jsend": "^1.0.2",
+    "mongoose": "^5.6.0",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.1"
   }
 }
